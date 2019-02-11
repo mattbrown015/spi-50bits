@@ -1,0 +1,10 @@
+*.elf
+GPATH
+GRTAGS
+GTAGS
+NppGTags.cfg
+
+*.o
+*.map
+
+*.bak
