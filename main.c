@@ -1,7 +1,10 @@
 #include <stm32l4xx_hal.h>
 
+#include <stm32l4xx_ll_bus.h>
+#include <stm32l4xx_ll_gpio.h>
 #include <stm32l4xx_ll_pwr.h>
 #include <stm32l4xx_ll_rcc.h>
+#include <stm32l4xx_ll_spi.h>
 #include <stm32l4xx_ll_system.h>
 
 // Some of the examples like to do the clock initialization
@@ -64,6 +67,52 @@ static void sysclk_init(void) {
 int main(void) {
     sysclk_init();
 
+    LL_AHB2_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_GPIOA);
+    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SPI1);
+
+    /*SPI1 GPIO Configuration
+        PA4 -> NSS
+        PA5 -> SCLK
+        PA12 -> MOSI
+    */
+    LL_GPIO_InitTypeDef GPIO_InitStruct;
+    GPIO_InitStruct.Pin = LL_GPIO_PIN_4 | LL_GPIO_PIN_5 | LL_GPIO_PIN_12;
+    GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
+    GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+    GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+    GPIO_InitStruct.Alternate = LL_GPIO_AF_5;
+    LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    LL_SPI_InitTypeDef SPI_InitStruct;
+    SPI_InitStruct.TransferDirection = LL_SPI_FULL_DUPLEX;
+    SPI_InitStruct.Mode = LL_SPI_MODE_MASTER;
+    SPI_InitStruct.DataWidth = LL_SPI_DATAWIDTH_8BIT;
+    SPI_InitStruct.ClockPolarity = LL_SPI_POLARITY_LOW;
+    SPI_InitStruct.ClockPhase = LL_SPI_PHASE_1EDGE;
+    SPI_InitStruct.NSS = LL_SPI_NSS_HARD_OUTPUT;
+    SPI_InitStruct.BaudRate = LL_SPI_BAUDRATEPRESCALER_DIV8;
+    SPI_InitStruct.BitOrder = LL_SPI_LSB_FIRST;
+    SPI_InitStruct.CRCCalculation = LL_SPI_CRCCALCULATION_DISABLE;
+    SPI_InitStruct.CRCPoly = 7;
+    LL_SPI_Init(SPI1, &SPI_InitStruct);
+    LL_SPI_EnableNSSPulseMgt(SPI1);
+
     while (1) {
+        // Check if the SPI is enabled
+        if((SPI1->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
+        {
+            // If disabled, I enable it
+            SET_BIT(SPI1->CR1, SPI_CR1_SPE);
+        }
+
+        while (!(SPI1->SR & SPI_SR_TXE));
+        // Send bytes over the SPI
+        LL_SPI_TransmitData16(SPI1,0xA0A0);
+        // Wait until the transmission is complete
+        while (SPI1->SR & SPI_SR_BSY);
+
+        // Disable SPI
+        CLEAR_BIT(SPI1->CR1, SPI_CR1_SPE);
     }
 }
