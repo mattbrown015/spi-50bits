@@ -1,16 +1,16 @@
-ARM_GCC_PATH_ROOT="C:\Program Files (x86)\GNU Tools ARM Embedded\8 2018-q4-major"
-ARM_GCC_PATH=$(ARM_GCC_PATH_ROOT)\bin
+ARM_GCC_PATH_ROOT=C:/Program Files (x86)/GNU Tools ARM Embedded/8 2018-q4-major
+ARM_GCC_PATH=$(ARM_GCC_PATH_ROOT)/bin
 
-STM32_CUBE_ROOT="C:\Users\matthewb\Documents\work\sandbox\stm32l4\STM32Cube_FW_L4_V1.13.0"
-STM32l4_HAL_DRIVER=$(STM32_CUBE_ROOT)\Drivers\STM32L4xx_HAL_Driver
-CMSIS_DRIVER=$(STM32_CUBE_ROOT)\Drivers\CMSIS
-CMSIS_DEVICE=$(CMSIS_DRIVER)\Device\ST\STM32L4xx
+STM32_CUBE_ROOT=C:/Users/matthewb/Documents/work/sandbox/stm32l4/STM32Cube_FW_L4_V1.13.0
+STM32l4_HAL_DRIVER=$(STM32_CUBE_ROOT)/Drivers/STM32L4xx_HAL_Driver
+CMSIS_DRIVER=$(STM32_CUBE_ROOT)/Drivers/CMSIS
+CMSIS_DEVICE=$(CMSIS_DRIVER)/Device/ST/STM32L4xx
 
-AS=$(ARM_GCC_PATH)\arm-none-eabi-gcc.exe
-CC=$(ARM_GCC_PATH)\arm-none-eabi-gcc.exe
-LD=$(ARM_GCC_PATH)\arm-none-eabi-gcc.exe
+AS=$(ARM_GCC_PATH)/arm-none-eabi-gcc.exe
+CC=$(ARM_GCC_PATH)/arm-none-eabi-gcc.exe
+LD=$(ARM_GCC_PATH)/arm-none-eabi-gcc.exe
 
-INCLUDE_PATH=-I. -I$(STM32l4_HAL_DRIVER)\inc -I$(CMSIS_DRIVER)\Include -I$(CMSIS_DEVICE)\Include
+INCLUDE_PATH=-I. -I$(STM32l4_HAL_DRIVER)/inc -I$(CMSIS_DRIVER)/Include -I$(CMSIS_DEVICE)/Include
 
 ARCH_FLAGS=-mcpu=cortex-m4 -mthumb
 HAL_MACROS=-DSTM32L433xx
