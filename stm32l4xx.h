@@ -5,6 +5,12 @@
 
 #include "stm32l433xx.h"
 
+typedef enum
+{
+  ERROR = 0,
+  SUCCESS = !ERROR
+} ErrorStatus;
+
 #define SET_BIT(REG, BIT)     ((REG) |= (BIT))
 
 #define CLEAR_BIT(REG, BIT)   ((REG) &= ~(BIT))

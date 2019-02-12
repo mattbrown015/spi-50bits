@@ -13,7 +13,7 @@ LD=$(ARM_GCC_PATH)/arm-none-eabi-gcc.exe
 INCLUDE_PATH=-I. -I$(STM32l4_HAL_DRIVER)/inc -I$(CMSIS_DRIVER)/Include -I$(CMSIS_DEVICE)/Include
 
 ARCH_FLAGS=-mcpu=cortex-m4 -mthumb
-HAL_MACROS=-DSTM32L433xx
+HAL_MACROS=-DSTM32L433xx -DUSE_FULL_LL_DRIVER
 CFLAGS=-Ofast -g3 -Wall -Wpedantic $(ARCH_FLAGS) $(HAL_MACROS) $(INCLUDE_PATH)
 
 TARGET=spi-50bits.elf
