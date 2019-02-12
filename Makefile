@@ -33,4 +33,4 @@ interrupt-vectors.o: interrupt-vectors.s
 
 .PHONY: clean
 clean:
-	del $(TARGET) *.o *.map
+	del *.elf *.o *.map
