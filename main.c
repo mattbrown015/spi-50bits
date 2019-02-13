@@ -91,18 +91,15 @@ int main(void) {
     LL_GPIO_SetPinSpeed(GPIOA, LL_GPIO_PIN_4, LL_GPIO_SPEED_FREQ_VERY_HIGH);
     LL_GPIO_SetPinOutputType(GPIOA, LL_GPIO_PIN_4, LL_GPIO_OUTPUT_PUSHPULL);
 
-    LL_SPI_InitTypeDef SPI_InitStruct;
-    SPI_InitStruct.TransferDirection = LL_SPI_FULL_DUPLEX;
-    SPI_InitStruct.Mode = LL_SPI_MODE_MASTER;
-    SPI_InitStruct.DataWidth = LL_SPI_DATAWIDTH_8BIT;
-    SPI_InitStruct.ClockPolarity = LL_SPI_POLARITY_LOW;
-    SPI_InitStruct.ClockPhase = LL_SPI_PHASE_1EDGE;
-    SPI_InitStruct.NSS = LL_SPI_NSS_HARD_OUTPUT;
-    SPI_InitStruct.BaudRate = LL_SPI_BAUDRATEPRESCALER_DIV8;
-    SPI_InitStruct.BitOrder = LL_SPI_LSB_FIRST;
-    SPI_InitStruct.CRCCalculation = LL_SPI_CRCCALCULATION_DISABLE;
-    SPI_InitStruct.CRCPoly = 7;
-    LL_SPI_Init(SPI1, &SPI_InitStruct);
+    LL_SPI_Disable(SPI1);
+    LL_SPI_SetTransferDirection(SPI1, LL_SPI_FULL_DUPLEX);
+    LL_SPI_SetMode(SPI1, LL_SPI_MODE_MASTER);
+    LL_SPI_SetDataWidth(SPI1, LL_SPI_DATAWIDTH_8BIT);
+    LL_SPI_SetClockPolarity(SPI1, LL_SPI_POLARITY_LOW);
+    LL_SPI_SetClockPhase(SPI1, LL_SPI_PHASE_1EDGE);
+    LL_SPI_SetNSSMode(SPI1, LL_SPI_NSS_HARD_OUTPUT);
+    LL_SPI_SetBaudRatePrescaler(SPI1, LL_SPI_BAUDRATEPRESCALER_DIV8);
+    LL_SPI_SetTransferBitOrder(SPI1, LL_SPI_LSB_FIRST);
     LL_SPI_EnableNSSPulseMgt(SPI1);
 
     while (1) {
