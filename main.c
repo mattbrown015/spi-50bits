@@ -118,5 +118,8 @@ int main(void) {
         while (LL_SPI_IsActiveFlag_BSY(SPI1));
 
         LL_SPI_Disable(SPI1);
+
+        volatile int count = 0xff;
+        while (count > 0) --count;
     }
 }
