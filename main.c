@@ -87,7 +87,8 @@ int main(void) {
     LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_4, LL_GPIO_MODE_ALTERNATE);
     LL_GPIO_SetAFPin_0_7(GPIOA, LL_GPIO_PIN_4, LL_GPIO_AF_5);
     LL_GPIO_SetPinSpeed(GPIOA, LL_GPIO_PIN_4, LL_GPIO_SPEED_FREQ_VERY_HIGH);
-    LL_GPIO_SetPinOutputType(GPIOA, LL_GPIO_PIN_4, LL_GPIO_OUTPUT_PUSHPULL);
+    LL_GPIO_SetPinOutputType(GPIOA, LL_GPIO_PIN_4, LL_GPIO_OUTPUT_OPENDRAIN);
+    LL_GPIO_SetPinPull(GPIOA, LL_GPIO_PIN_4, LL_GPIO_PULL_UP);
 
     LL_SPI_Disable(SPI1);
     LL_SPI_SetTransferDirection(SPI1, LL_SPI_FULL_DUPLEX);
@@ -102,7 +103,7 @@ int main(void) {
     // So this divider is dividing 80 MHz and /8 gives a 10 MHz SCLK.
     LL_SPI_SetBaudRatePrescaler(SPI1, LL_SPI_BAUDRATEPRESCALER_DIV8);
     LL_SPI_SetTransferBitOrder(SPI1, LL_SPI_LSB_FIRST);
-    LL_SPI_EnableNSSPulseMgt(SPI1);
+    LL_SPI_DisableNSSPulseMgt(SPI1);
 
     while (1) {
         if(!LL_SPI_IsEnabled(SPI1))
