@@ -1,5 +1,3 @@
-#include <stm32l4xx_hal.h>
-
 #include <stm32l4xx_ll_bus.h>
 #include <stm32l4xx_ll_gpio.h>
 #include <stm32l4xx_ll_pwr.h>
@@ -22,7 +20,7 @@ static void sysclk_init(void) {
     // LSE must be ready before enabling the MSI clock PLL.
     // LSEON is in backup power domain so this is only necessary after a POR.
     if (!LL_RCC_LSE_IsReady()) {
-        __HAL_RCC_PWR_CLK_ENABLE();
+        LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
 
         LL_PWR_EnableBkUpAccess();
         while (!LL_PWR_IsEnabledBkUpAccess());
@@ -32,7 +30,7 @@ static void sysclk_init(void) {
         while (!LL_RCC_LSE_IsReady());
 
         LL_PWR_DisableBkUpAccess();
-        __HAL_RCC_PWR_CLK_DISABLE();
+        LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_PWR);
     }
 
     LL_RCC_MSI_EnablePLLMode();
