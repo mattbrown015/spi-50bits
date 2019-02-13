@@ -103,20 +103,17 @@ int main(void) {
     LL_SPI_EnableNSSPulseMgt(SPI1);
 
     while (1) {
-        // Check if the SPI is enabled
-        if((SPI1->CR1 & SPI_CR1_SPE) != SPI_CR1_SPE)
+        if(!LL_SPI_IsEnabled(SPI1))
         {
-            // If disabled, I enable it
-            SET_BIT(SPI1->CR1, SPI_CR1_SPE);
+            LL_SPI_Enable(SPI1);
         }
 
-        while (!(SPI1->SR & SPI_SR_TXE));
+        while (!LL_SPI_IsActiveFlag_TXE(SPI1));
         // Send bytes over the SPI
         LL_SPI_TransmitData16(SPI1,0xA0A0);
         // Wait until the transmission is complete
-        while (SPI1->SR & SPI_SR_BSY);
+        while (LL_SPI_IsActiveFlag_BSY(SPI1));
 
-        // Disable SPI
-        CLEAR_BIT(SPI1->CR1, SPI_CR1_SPE);
+        LL_SPI_Disable(SPI1);
     }
 }
