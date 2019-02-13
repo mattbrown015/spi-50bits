@@ -96,6 +96,10 @@ int main(void) {
     LL_SPI_SetClockPolarity(SPI1, LL_SPI_POLARITY_LOW);
     LL_SPI_SetClockPhase(SPI1, LL_SPI_PHASE_1EDGE);
     LL_SPI_SetNSSMode(SPI1, LL_SPI_NSS_HARD_OUTPUT);
+    // SPI1 is on the APB2 bus and its clock is PCLK2 which is derived from SYSCLK.
+    // There are various PCLK2 prescalers but I believe they all default to 1
+    // hence PCLK2 is SYSCLK which 80 MHz.
+    // So this divider is dividing 80 MHz and /8 gives a 10 MHz SCLK.
     LL_SPI_SetBaudRatePrescaler(SPI1, LL_SPI_BAUDRATEPRESCALER_DIV8);
     LL_SPI_SetTransferBitOrder(SPI1, LL_SPI_LSB_FIRST);
     LL_SPI_EnableNSSPulseMgt(SPI1);
