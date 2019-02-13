@@ -112,7 +112,7 @@ int main(void) {
 
         while (!LL_SPI_IsActiveFlag_TXE(SPI1));
         // Send bytes over the SPI
-        LL_SPI_TransmitData16(SPI1,0xA0A0);
+        LL_SPI_TransmitData16(SPI1, 0xA0A0);
         // Wait until the transmission is complete
         while (LL_SPI_IsActiveFlag_BSY(SPI1));
 
