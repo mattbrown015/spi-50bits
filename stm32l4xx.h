@@ -1,8 +1,6 @@
 #ifndef STM32L4xx_H
 #define STM32L4xx_H
 
-#define STM32L4
-
 #include "stm32l433xx.h"
 
 #define SET_BIT(REG, BIT)     ((REG) |= (BIT))
