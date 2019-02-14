@@ -111,7 +111,7 @@ int main(void) {
     // hence PCLK2 is SYSCLK which 80 MHz.
     // So this divider is dividing 80 MHz and /32 gives a 2.5 MHz SCLK.
     LL_SPI_SetBaudRatePrescaler(SPI1, LL_SPI_BAUDRATEPRESCALER_DIV32);
-    LL_SPI_SetTransferBitOrder(SPI1, LL_SPI_LSB_FIRST);
+    LL_SPI_SetTransferBitOrder(SPI1, LL_SPI_MSB_FIRST);
     LL_SPI_DisableNSSPulseMgt(SPI1);
 
     while (1) {
