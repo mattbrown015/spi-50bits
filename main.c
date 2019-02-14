@@ -5,6 +5,15 @@
 #include <stm32l4xx_ll_spi.h>
 #include <stm32l4xx_ll_system.h>
 
+// With data frame data size set to 10-bits the buffer format is:
+// | hword |                 0                 |                 1                 |                 2                 |                 3                 |                 4                 |                 5                 |                 6                 |
+// | byte  |         0       |         1       |         2       |         3       |         4       |         5       |         6       |         7       |         8       |         9       |         a       |         b       |         c       |         d       |
+// | bit   | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 |
+// | sent  | - - - - - - - - | - - - x x x x x | - - - - - - - - | - - - x x x x x | - - - - - - - - | - - - x x x x x | - - - - - - - - | - - - x x x x x | - - - - - - - - | - - - x x x x x | - - - - - - - - | - - - x x x x x | - - - - - - - - | - - - x x x x x |
+// The 4 MSBs are written as 1s to the TXFIFO but they are not seen in the SPI transaction.
+uint16_t tx_buffer[6] = { 0xfc55, 0xfc55, 0xfc55, 0xfc55, 0xfc55, 0xfc55 };
+#define TX_BUFFER_LENGTH (sizeof(tx_buffer) / sizeof(tx_buffer[0]))
+
 // Some of the examples like to do the clock initialization
 // from the reset handler before calling main. I'm not sure
 // what value it adds except ensuring it really is the first
@@ -93,7 +102,7 @@ int main(void) {
     LL_SPI_Disable(SPI1);
     LL_SPI_SetTransferDirection(SPI1, LL_SPI_FULL_DUPLEX);
     LL_SPI_SetMode(SPI1, LL_SPI_MODE_MASTER);
-    LL_SPI_SetDataWidth(SPI1, LL_SPI_DATAWIDTH_8BIT);
+    LL_SPI_SetDataWidth(SPI1, LL_SPI_DATAWIDTH_10BIT);
     LL_SPI_SetClockPolarity(SPI1, LL_SPI_POLARITY_LOW);
     LL_SPI_SetClockPhase(SPI1, LL_SPI_PHASE_1EDGE);
     LL_SPI_SetNSSMode(SPI1, LL_SPI_NSS_HARD_OUTPUT);
@@ -111,11 +120,13 @@ int main(void) {
             LL_SPI_Enable(SPI1);
         }
 
-        while (!LL_SPI_IsActiveFlag_TXE(SPI1));
-        // Send bytes over the SPI
-        LL_SPI_TransmitData16(SPI1, 0xA0A0);
-        // Wait until the transmission is complete
-        while (LL_SPI_IsActiveFlag_BSY(SPI1));
+        for (int i = 0; i < TX_BUFFER_LENGTH; ++i) {
+            while (!LL_SPI_IsActiveFlag_TXE(SPI1));
+            // Send bytes over the SPI
+            LL_SPI_TransmitData16(SPI1, tx_buffer[i]);
+            // Wait until the transmission is complete
+            while (LL_SPI_IsActiveFlag_BSY(SPI1));
+        }
 
         LL_SPI_Disable(SPI1);
 
