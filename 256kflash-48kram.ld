@@ -30,6 +30,13 @@ SECTIONS
         _etext = .;
     } > FLASH
 
+    .rodata :
+    {
+        . = ALIGN(8);
+        *(.rodata)
+        . = ALIGN(8);
+    } > FLASH
+
     /* used by the startup to initialize data */
     _sidata = LOADADDR(.data);
 
