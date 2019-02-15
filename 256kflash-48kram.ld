@@ -24,6 +24,8 @@ SECTIONS
         reset-handler.o(.text.reset_handler)
         interrupt-vectors.o(.text.default_handler)
         *(.text)
+        *(.glue_7)
+        *(.glue_7t)
         . = ALIGN(8);
         _etext = .;
     } > FLASH
