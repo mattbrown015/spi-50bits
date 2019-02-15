@@ -20,12 +20,14 @@ CFLAGS=-Ofast -g3 -Wall -Wpedantic $(ARCH_FLAGS) $(HAL_MACROS) $(INCLUDE_PATH)
 
 TARGET=spi-50bits.elf
 
-OBJECTS=main.o reset-handler.o interrupt-vectors.o
+OBJECTS=main.o sysclk-init.o reset-handler.o interrupt-vectors.o
 
 $(TARGET): 256kflash-48kram.ld $(OBJECTS)
 	$(LD) $(ARCH_FLAGS) -Wl,--script=$< -Wl,-Map=$(basename $@).map $(OBJECTS) -lc_nano -lnosys -o $@
 
 main.o:
+
+sysclk-init.o:
 
 reset-handler.o: reset-handler.s
 	$(AS) -c $(ARCH_FLAGS) -o $@ $<

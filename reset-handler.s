@@ -35,6 +35,7 @@ loop_fill_zero_bss:
     cmp r2, r3
     bcc fill_zero_bss
 
+    bl sysclk_init
     bl __libc_init_array
 
     bl main
