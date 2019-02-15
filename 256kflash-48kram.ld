@@ -27,6 +27,7 @@ SECTIONS
         *(.text*)
         *(.glue_7)
         *(.glue_7t)
+        *(.eh_frame)
         . = ALIGN(8);
         _etext = .;
     } > FLASH
@@ -36,6 +37,51 @@ SECTIONS
         . = ALIGN(8);
         *(.rodata)
         *(.rodata*)
+        . = ALIGN(8);
+    } > FLASH
+
+    .ARM.extab :
+    { 
+        . = ALIGN(8);
+        *(.ARM.extab* .gnu.linkonce.armextab.*)
+        . = ALIGN(8);
+    } > FLASH
+
+    .ARM :
+    {
+        . = ALIGN(8);
+        __exidx_start = .;
+        *(.ARM.exidx*)
+        __exidx_end = .;
+        . = ALIGN(8);
+    } > FLASH
+
+    .preinit_array :
+    {
+        . = ALIGN(8);
+        PROVIDE_HIDDEN (__preinit_array_start = .);
+        KEEP (*(.preinit_array*))
+        PROVIDE_HIDDEN (__preinit_array_end = .);
+        . = ALIGN(8);
+    } > FLASH
+
+    .init_array :
+    {
+        . = ALIGN(8);
+        PROVIDE_HIDDEN (__init_array_start = .);
+        KEEP (*(SORT(.init_array.*)))
+        KEEP (*(.init_array*))
+        PROVIDE_HIDDEN (__init_array_end = .);
+        . = ALIGN(8);
+    } > FLASH
+
+    .fini_array :
+    {
+        . = ALIGN(8);
+        PROVIDE_HIDDEN (__fini_array_start = .);
+        KEEP (*(SORT(.fini_array.*)))
+        KEEP (*(.fini_array*))
+        PROVIDE_HIDDEN (__fini_array_end = .);
         . = ALIGN(8);
     } > FLASH
 
@@ -56,9 +102,26 @@ SECTIONS
     .bss :
     {
         _sbss = .;
+         __bss_start__ = _sbss;
         *(.bss)
         *(.bss*)
+        *(COMMON)
         . = ALIGN(4);
         _ebss = .;
+        __bss_end__ = _ebss;
     } > SRAM1
+
+    /* Remove information from the standard libraries */
+    /DISCARD/ :
+    {
+        libc.a ( * )
+        libc_nano.a ( * )
+        libm.a ( * )
+        libgcc.a ( * )
+    }
+
+    .ARM.attributes 0 :
+    {
+        *(.ARM.attributes)
+    }
 }

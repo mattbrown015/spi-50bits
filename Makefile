@@ -23,7 +23,7 @@ TARGET=spi-50bits.elf
 OBJECTS=main.o reset-handler.o interrupt-vectors.o
 
 $(TARGET): 256kflash-48kram.ld $(OBJECTS)
-	$(LD) $(ARCH_FLAGS) -nostdlib -Wl,--script=$< -Wl,-Map=$(basename $@).map $(OBJECTS) -o $@
+	$(LD) $(ARCH_FLAGS) -Wl,--script=$< -Wl,-Map=$(basename $@).map $(OBJECTS) -lc_nano -lnosys -o $@
 
 main.o:
 
