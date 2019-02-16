@@ -2,6 +2,9 @@
 #include <stm32l4xx_ll_gpio.h>
 #include <stm32l4xx_ll_spi.h>
 
+#include <stdio.h>
+#include <string.h>
+
 // With data frame data size set to 10-bits the buffer format is:
 // | hword |                 0                 |                 1                 |                 2                 |                 3                 |                 4                 |                 5                 |                 6                 |
 // | byte  |         0       |         1       |         2       |         3       |         4       |         5       |         6       |         7       |         8       |         9       |         a       |         b       |         c       |         d       |
@@ -11,7 +14,15 @@
 uint16_t tx_buffer[6] = { 0xfc55, 0xfc55, 0xfc55, 0xfc55, 0xfc55, 0xfc55 };
 #define TX_BUFFER_LENGTH (sizeof(tx_buffer) / sizeof(tx_buffer[0]))
 
+static void c_std_lib_test(void) {
+    const char s[] = "test printf";
+    const size_t len = strlen(s);
+    printf("%s %u\n", s, len);
+}
+
 int main(void) {
+    c_std_lib_test();
+
     LL_AHB2_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_GPIOA);
     LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SPI1);
 
