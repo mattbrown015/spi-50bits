@@ -1,6 +1,9 @@
 ENTRY(reset_handler)
 
 _estack = 0x2000C000;    /* end of SRAM1 */
+/* Generate a link error if heap and stack don't fit into RAM */
+_min_heap_size = 0x200;  /* required amount of heap */
+_min_stack_size = 0x400; /* required amount of stack */
 
 MEMORY
 {
@@ -109,6 +112,17 @@ SECTIONS
         . = ALIGN(4);
         _ebss = .;
         __bss_end__ = _ebss;
+    } > SRAM1
+
+    /* user_heap_stack section, used to check that there is enough SRAM1 left */
+    ._user_heap_stack :
+    {
+        . = ALIGN(8);
+        PROVIDE (end = .);
+        PROVIDE (_end = .);
+        . = . + _min_heap_size;
+        . = . + _min_stack_size;
+        . = ALIGN(8);
     } > SRAM1
 
     /* Remove information from the standard libraries */
