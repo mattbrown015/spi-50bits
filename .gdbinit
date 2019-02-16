@@ -14,6 +14,6 @@
 #  "C:\Program Files (x86)\SEGGER\JLink_V640\JLinkGDBServerCL.exe" -device STM32L442KC -if SWD -speed 4000
 #
 # Start gdb using the following to so that this .gdbinit will be run:
-#  "C:\Program Files (x86)\GNU Tools ARM Embedded\8 2018-q4-major\bin\arm-none-eabi-gdb.exe" -iex "add-auto-load-safe-path .gdbinit" BUILD\PENGUIN\GCC_ARM\temperature-sensor_application.elf
+#  "C:\Program Files (x86)\GNU Tools ARM Embedded\8 2018-q4-major\bin\arm-none-eabi-gdb.exe" -iex "add-auto-load-safe-path .gdbinit" spi-50bits.elf
 
 target remote localhost:3333
