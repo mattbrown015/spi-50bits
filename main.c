@@ -62,10 +62,7 @@ int main(void) {
     LL_SPI_DisableNSSPulseMgt(SPI1);
 
     while (1) {
-        if(!LL_SPI_IsEnabled(SPI1))
-        {
-            LL_SPI_Enable(SPI1);
-        }
+        LL_SPI_Enable(SPI1);
 
         for (int i = 0; i < TX_BUFFER_LENGTH; ++i) {
             while (!LL_SPI_IsActiveFlag_TXE(SPI1));
