@@ -21,7 +21,7 @@ uint16_t rx_buffer[6];
 int main(void) {
     puts("spi-50bits " __DATE__ " " __TIME__);
 
-    LL_AHB2_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_GPIOA);  // GPIOA will already be enabled because of stdio UART is initialised
+    LL_AHB2_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_GPIOA);  // GPIOA will already be enabled because of stdio UART initialisation
     LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SPI1);
 
     // MOSI PA12
