@@ -13,7 +13,7 @@ int _read(int file, char *ptr, int len) {
 
 int _write(int file, const char *ptr, const int len) {
     for (int i = 0; i < len; ++i) {
-        while ((LPUART1->ISR & LL_LPUART_ISR_TXE) != LL_LPUART_ISR_TXE);
+        while ((LPUART1->ISR & LL_LPUART_ISR_TC) != LL_LPUART_ISR_TC);
         LL_LPUART_TransmitData8(LPUART1, *ptr);
         ++ptr;
     }
