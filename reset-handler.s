@@ -38,6 +38,7 @@ loop_fill_zero_bss:
     bl sysclk_init
     bl __libc_init_array
 
+    bl stdio_uart_init  /* Initialise stdio UART so that stdio can be used in main */
     bl main
 
 infinite_loop:

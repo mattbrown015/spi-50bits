@@ -14,16 +14,10 @@
 uint16_t tx_buffer[6] = { 0xfc55, 0xfc55, 0xfc55, 0xfc55, 0xfc55, 0xfc55 };
 #define TX_BUFFER_LENGTH (sizeof(tx_buffer) / sizeof(tx_buffer[0]))
 
-static void c_std_lib_test(void) {
-    const char s[] = "test printf";
-    const size_t len = strlen(s);
-    printf("%s %u\n", s, len);
-}
-
 int main(void) {
-    c_std_lib_test();
+    puts("spi-50bits " __DATE__ " " __TIME__);
 
-    LL_AHB2_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_GPIOA);
+    LL_AHB2_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_GPIOA);  // GPIOA will already be enabled because of stdio UART is initialised
     LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SPI1);
 
     // MOSI PA12
