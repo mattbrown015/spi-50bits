@@ -2,6 +2,7 @@
 #include <stm32l4xx_ll_gpio.h>
 #include <stm32l4xx_ll_spi.h>
 
+#include <inttypes.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -13,6 +14,9 @@
 // The 4 MSBs are written as 1s to the TXFIFO but they are not seen in the SPI transaction.
 uint16_t tx_buffer[6] = { 0xfc55, 0xfc55, 0xfc55, 0xfc55, 0xfc55, 0xfc55 };
 #define TX_BUFFER_LENGTH (sizeof(tx_buffer) / sizeof(tx_buffer[0]))
+
+uint16_t rx_buffer[6];
+#define RX_BUFFER_LENGTH (sizeof(rx_buffer) / sizeof(rx_buffer[0]))
 
 int main(void) {
     puts("spi-50bits " __DATE__ " " __TIME__);
@@ -69,11 +73,15 @@ int main(void) {
             LL_SPI_TransmitData16(SPI1, tx_buffer[i]);
             // Wait until the transmission is complete
             while (LL_SPI_IsActiveFlag_BSY(SPI1));
+
+            rx_buffer[i] = LL_SPI_ReceiveData16(SPI1);
         }
 
         LL_SPI_Disable(SPI1);
 
-        volatile int count = 0xff;
-        while (count > 0) --count;
+        for (int i = 0; i < RX_BUFFER_LENGTH; ++i) {
+            printf(" 0x%" PRIx16, rx_buffer[i]);
+        }
+        putchar('\n');
     }
 }
