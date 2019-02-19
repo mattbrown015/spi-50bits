@@ -15,6 +15,8 @@
 uint16_t tx_buffer[6] = { 0xfc55, 0xfc55, 0xfc55, 0xfc55, 0xfc55, 0xfc55 };
 #define TX_BUFFER_LENGTH (sizeof(tx_buffer) / sizeof(tx_buffer[0]))
 
+// In the MOSI to MISO loopback test "{ 0x0055, 0x0055, 0x0055, 0x0055, 0x0055, 0x0055 }" is received
+// because the MSBs, i.e. 0xfc00 above, aren't transmitted.
 uint16_t rx_buffer[6];
 #define RX_BUFFER_LENGTH (sizeof(rx_buffer) / sizeof(rx_buffer[0]))
 
