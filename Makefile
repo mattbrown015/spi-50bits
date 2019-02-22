@@ -35,10 +35,7 @@ stdio-uart-init.o:
 
 sysclk-init.o:
 
-reset-handler.o: reset-handler.s
-	$(AS) -c $(ARCH_FLAGS) -o $@ $<
-
-interrupt-vectors.o: interrupt-vectors.s
+%.o: %.s
 	$(AS) -c $(ARCH_FLAGS) -o $@ $<
 
 .PHONY: clean
