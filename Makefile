@@ -27,13 +27,8 @@ TARGET=spi-50bits.elf
 $(TARGET): 256kflash-48kram.ld $(OBJS)
 	$(LD) $(ARCH_FLAGS) -Wl,--script=$< -Wl,-Map=$(basename $@).map $(OBJS) -lc_nano -lnosys -o $@
 
-main.o:
-
-syscalls.o:
-
-stdio-uart-init.o:
-
-sysclk-init.o:
+%.o: %.c
+	$(CC) -c $(CFLAGS) -o $@ $<
 
 %.o: %.s
 	$(AS) -c $(ARCH_FLAGS) -o $@ $<
