@@ -12,6 +12,10 @@ LD=$(ARM_GCC_PATH)/arm-none-eabi-gcc.exe
 
 VPATH=$(STM32l4_HAL_DRIVER)/Src
 
+SRCS=main.o syscalls.c stdio-uart-init.c sysclk-init.c reset-handler.s interrupt-vectors.s
+OBJS=$(SRCS:.c=.o)
+OBJS:=$(OBJS:.s=.o)
+
 INCLUDE_PATH=-I. -I$(STM32l4_HAL_DRIVER)/inc -I$(CMSIS_DRIVER)/Include -I$(CMSIS_DEVICE)/Include
 
 ARCH_FLAGS=-mcpu=cortex-m4 -mthumb
@@ -19,8 +23,6 @@ HAL_MACROS=-DSTM32L433xx
 CFLAGS=-Ofast -g3 -Wall -Wpedantic $(ARCH_FLAGS) $(HAL_MACROS) $(INCLUDE_PATH)
 
 TARGET=spi-50bits.elf
-
-OBJS=main.o syscalls.o stdio-uart-init.o sysclk-init.o reset-handler.o interrupt-vectors.o
 
 $(TARGET): 256kflash-48kram.ld $(OBJS)
 	$(LD) $(ARCH_FLAGS) -Wl,--script=$< -Wl,-Map=$(basename $@).map $(OBJS) -lc_nano -lnosys -o $@
