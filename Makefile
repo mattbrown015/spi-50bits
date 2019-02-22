@@ -16,13 +16,13 @@ SRCS=main.o syscalls.c stdio-uart-init.c sysclk-init.c reset-handler.s interrupt
 OBJS=$(SRCS:.c=.o)
 OBJS:=$(OBJS:.s=.o)
 
+TARGET=spi-50bits.elf
+
 INCLUDE_PATH=-I. -I$(STM32l4_HAL_DRIVER)/inc -I$(CMSIS_DRIVER)/Include -I$(CMSIS_DEVICE)/Include
 
 ARCH_FLAGS=-mcpu=cortex-m4 -mthumb
 HAL_MACROS=-DSTM32L433xx
 CFLAGS=-Ofast -g3 -Wall -Wpedantic $(ARCH_FLAGS) $(HAL_MACROS) $(INCLUDE_PATH)
-
-TARGET=spi-50bits.elf
 
 $(TARGET): 256kflash-48kram.ld $(OBJS)
 	$(LD) $(ARCH_FLAGS) -Wl,--script=$< -Wl,-Map=$(basename $@).map $(OBJS) -lc_nano -lnosys -o $@
