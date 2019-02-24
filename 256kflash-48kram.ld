@@ -17,15 +17,15 @@ SECTIONS
     .interrupt_vectors :
     {
         . = ALIGN(8);
-        KEEP(interrupt-vectors.o(.interrupt_vectors))
+        KEEP(*(.interrupt_vectors))
         . = ALIGN(8);
     } > FLASH
 
     .text :
     {
         . = ALIGN(8);
-        reset-handler.o(.text.reset_handler)
-        interrupt-vectors.o(.text.default_handler)
+        *(.text.reset_handler)
+        *(.text.default_handler)
         *(.text)
         *(.text*)
         *(.glue_7)

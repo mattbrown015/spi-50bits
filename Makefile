@@ -16,7 +16,11 @@ SRCS=main.c syscalls.c stdio-uart-init.c sysclk-init.c reset-handler.s interrupt
 OBJS=$(SRCS:.c=.o)
 OBJS:=$(OBJS:.s=.o)
 
-TARGET=spi-50bits.elf
+STM32L433_DIR=stm32l433
+OUTPUT_DIR=$(STM32L433_DIR)
+OBJS:=$(addprefix $(OUTPUT_DIR)/, $(OBJS))
+
+TARGET=$(OUTPUT_DIR)/spi-50bits.elf
 
 INCLUDE_PATH=-I. -I$(STM32l4_HAL_DRIVER)/inc -I$(CMSIS_DRIVER)/Include -I$(CMSIS_DEVICE)/Include
 
@@ -24,15 +28,21 @@ ARCH_FLAGS=-mcpu=cortex-m4 -mthumb
 HAL_MACROS=-DSTM32L433xx
 CFLAGS=-Ofast -g3 -Wall -Wpedantic $(ARCH_FLAGS) $(HAL_MACROS) $(INCLUDE_PATH)
 
+all: prep $(TARGET)
+
 $(TARGET): 256kflash-48kram.ld $(OBJS)
 	$(LD) $(ARCH_FLAGS) -Wl,--script=$< -Wl,-Map=$(basename $@).map $(OBJS) -lc_nano -lnosys -o $@
 
-%.o: %.c
+$(OUTPUT_DIR)/%.o: %.c
 	$(CC) -c $(CFLAGS) -o $@ $<
 
-%.o: %.s
+$(OUTPUT_DIR)/%.o: %.s
 	$(AS) -c $(ARCH_FLAGS) -o $@ $<
+
+.PHONY: prep
+prep:
+	@if not exist $(OUTPUT_DIR) mkdir $(OUTPUT_DIR)
 
 .PHONY: clean
 clean:
-	del *.elf *.o *.map
+	del *.elf "$(OUTPUT_DIR)/*.o" *.map
