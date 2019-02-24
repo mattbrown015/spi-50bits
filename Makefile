@@ -12,7 +12,7 @@ LD=$(ARM_GCC_PATH)/arm-none-eabi-gcc.exe
 
 VPATH=$(STM32l4_HAL_DRIVER)/Src
 
-SRCS=main.o syscalls.c stdio-uart-init.c sysclk-init.c reset-handler.s interrupt-vectors.s
+SRCS=main.c syscalls.c stdio-uart-init.c sysclk-init.c reset-handler.s interrupt-vectors.s
 OBJS=$(SRCS:.c=.o)
 OBJS:=$(OBJS:.s=.o)
 
