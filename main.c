@@ -64,6 +64,9 @@ int main(void) {
     LL_SPI_DisableNSSPulseMgt(SPI1);
 
     while (1) {
+        puts("Press any key to send command...");
+        getchar();
+
         LL_SPI_Enable(SPI1);
 
         for (int i = 0; i < TX_BUFFER_LENGTH; ++i) {
