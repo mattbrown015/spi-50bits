@@ -10,7 +10,7 @@
 // | hword |                 0                 |                 1                 |                 2                 |                 3                 |                 4                 |                 5                 |                 6                 |
 // | byte  |         0       |         1       |         2       |         3       |         4       |         5       |         6       |         7       |         8       |         9       |         a       |         b       |         c       |         d       |
 // | bit   | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7 |
-// | sent  | - - - - - - - - | - - - x x x x x | - - - - - - - - | - - - x x x x x | - - - - - - - - | - - - x x x x x | - - - - - - - - | - - - x x x x x | - - - - - - - - | - - - x x x x x | - - - - - - - - | - - - x x x x x | - - - - - - - - | - - - x x x x x |
+// | sent  | - - - - - - - - | - - x x x x x x | - - - - - - - - | - - x x x x x x | - - - - - - - - | - - x x x x x x | - - - - - - - - | - - x x x x x x | - - - - - - - - | - - x x x x x x | - - - - - - - - | - - x x x x x x | - - - - - - - - | - - x x x x x x |
 // The 4 MSBs are written as 1s to the TXFIFO but they are not seen in the SPI transaction.
 uint16_t tx_buffer[6] = { 0xfc55, 0xfc55, 0xfc55, 0xfc55, 0xfc55, 0xfc55 };
 #define TX_BUFFER_LENGTH (sizeof(tx_buffer) / sizeof(tx_buffer[0]))
