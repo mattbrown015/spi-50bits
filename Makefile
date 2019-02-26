@@ -45,4 +45,4 @@ prep:
 
 .PHONY: clean
 clean:
-	del *.elf "$(OUTPUT_DIR)/*.o" *.map
+	del /Q "$(OUTPUT_DIR)\*.*"
